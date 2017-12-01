@@ -23,7 +23,7 @@ namespace WindowsFormsApp1
             this.Close();
         }
 
-        private string Hash(string password) //HASH 
+        private string Hash(string password) //HASH Password
         {
             var bytes = new UTF8Encoding().GetBytes(password);
             var hashBytes = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
