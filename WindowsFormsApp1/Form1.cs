@@ -33,8 +33,8 @@ namespace WindowsFormsApp1
         }
 
         private string GetConnString() {//connection string on database VSITESTUDNET
-                                         return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
-           // return "workstation id=payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=payments.mssql.somee.com;persist security info=False;initial catalog=payments";
+                                        // return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
+            return "workstation id=payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=payments.mssql.somee.com;persist security info=False;initial catalog=payments";
         }
 
         //SELECT QUERY
@@ -182,9 +182,7 @@ namespace WindowsFormsApp1
         //EXCEL REPORT
         private void button3_Click(object sender, EventArgs e)
         {
-            //printDialog1.Document = printDocument1;
-            //if(printDialog1.ShowDialog() == DialogResult.OK)
-            //printDocument1.Print();
+
             // creating Excel Application  
             Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
             // creating new WorkBook within Excel application  
@@ -204,16 +202,17 @@ namespace WindowsFormsApp1
             {
                 worksheet.Cells[1, i] = dataGridView1.Columns[i - 1].HeaderText;
             }
-            // storing Each row and column value to excel sheet  
-            for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+            // storing Each row and column value to excel sheet 
+            //               WAS dataGridView1.Rows.Count -1                           
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
                 for (int j = 0; j < dataGridView1.Columns.Count; j++)
                 {
                     worksheet.Cells[i + 2, j + 1] = dataGridView1.Rows[i].Cells[j].Value.ToString();
                 }
             }
-            // save the application  
-            workbook.SaveAs("c:\\output.xls", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            // save the application     xls
+            //workbook.SaveAs("c:\\output.xlsx", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             // Exit from the application  
             app.Quit();
 
