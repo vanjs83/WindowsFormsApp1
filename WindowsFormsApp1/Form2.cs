@@ -37,7 +37,9 @@ namespace WindowsFormsApp1
                 MessageBox.Show("Please, Insert username and password","Faild",MessageBoxButtons.OKCancel,MessageBoxIcon.Warning);
                 return;
             }
-            string connString = "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
+               string connString = "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
+            //string connString = "workstation id=payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=payments.mssql.somee.com;persist security info=False;initial catalog=payments";
+
             SqlConnection con = new SqlConnection(connString);
             SqlCommand cmd = new SqlCommand();
    

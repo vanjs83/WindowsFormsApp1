@@ -33,7 +33,8 @@ namespace WindowsFormsApp1
         }
 
         private string GetConnString() {//connection string on database VSITESTUDNET
-            return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
+                                         return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
+           // return "workstation id=payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=payments.mssql.somee.com;persist security info=False;initial catalog=payments";
         }
 
         //SELECT QUERY
@@ -94,6 +95,7 @@ namespace WindowsFormsApp1
                 com.CommandType = CommandType.StoredProcedure;
                 com.CommandText = "ShowName";
                 com.Parameters.AddWithValue("@idUser", this.idUser);
+                com.Parameters.AddWithValue("@name", this.comboBox2.Text.Trim());
                 adapter.SelectCommand = com;
                 com.Connection = conn;
                 DataTable table = new DataTable();
