@@ -95,7 +95,7 @@ namespace WindowsFormsApp1
                 com.CommandType = CommandType.StoredProcedure;
                 com.CommandText = "ShowName";
                 com.Parameters.AddWithValue("@idUser", this.idUser);
-                com.Parameters.AddWithValue("@name", this.comboBox2.Text.Trim());
+                com.Parameters.AddWithValue("@NameCounts", this.comboBox3.Text.Trim());
                 adapter.SelectCommand = com;
                 com.Connection = conn;
                 DataTable table = new DataTable();
@@ -182,7 +182,6 @@ namespace WindowsFormsApp1
         //EXCEL REPORT
         private void button3_Click(object sender, EventArgs e)
         {
-
             // creating Excel Application  
             Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
             // creating new WorkBook within Excel application  
@@ -196,14 +195,13 @@ namespace WindowsFormsApp1
             worksheet = workbook.Sheets["Sheet1"];
             worksheet = workbook.ActiveSheet;
             // changing the name of active sheet  
-            worksheet.Name = "Payments";
+            worksheet.Name = "payments";
             // storing header part in Excel  
             for (int i = 1; i < dataGridView1.Columns.Count + 1; i++)
             {
                 worksheet.Cells[1, i] = dataGridView1.Columns[i - 1].HeaderText;
             }
-            // storing Each row and column value to excel sheet 
-            //               WAS dataGridView1.Rows.Count -1                           
+            // storing Each row and column value to excel sheet  counts -1
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
                 for (int j = 0; j < dataGridView1.Columns.Count; j++)
@@ -211,11 +209,10 @@ namespace WindowsFormsApp1
                     worksheet.Cells[i + 2, j + 1] = dataGridView1.Rows[i].Cells[j].Value.ToString();
                 }
             }
-            // save the application     xls
-            //workbook.SaveAs("c:\\output.xlsx", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            // save the application  
+            //workbook.SaveAs("c:\\output.xls", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
             // Exit from the application  
             app.Quit();
-
 
         }
 
