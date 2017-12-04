@@ -74,9 +74,26 @@ namespace WindowsFormsApp1
                     adapter.Fill(data);
 
                    BindingSource bsource = new BindingSource();
-                   bsource.DataSource = data;
+                   bsource.DataSource = data;              
                    dataGridView1.DataSource = bsource;
-                   adapter.Update(data);
+                // Add char
+                if (!checkBox1.Checked)
+                {
+                   
+                    this.chart1.Series["Name"].XValueMember = "name";
+                    this.chart1.Series["Name"].YValueMembers = "suma";
+                   
+                }
+                else
+                {
+                    
+                    this.chart1.Series["Name"].XValueMember = "name";
+                    this.chart1.Series["Name"].YValueMembers = "price";
+                 
+                }
+                this.chart1.DataSource = bsource;
+                chart1.DataBind();
+                adapter.Update(data);
 
                 if (checkBox1.Checked)
                 {
@@ -141,9 +158,7 @@ namespace WindowsFormsApp1
                 MessageBox.Show("Please, Entered all data!", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            // double suma = Convert.ToDouble(this.textBoxSuma.Text);
-            //  string query = "INSERT INTO Payment.dbo.Payments(name, suma, datum, description) VALUES('" + this.textBoxName.Text + "', '" +this.textBoxSuma.Text+ "' , '" + this.dateTimeInsert.Value.Date.ToString("yyyy-MM-dd HH:mm") + "', '" +this.textBoxDescription.Text +"') ;";
-            
+           
                 SqlConnection conn = new SqlConnection(GetConnString());
             try
             { 
@@ -161,8 +176,7 @@ namespace WindowsFormsApp1
                 cmd.ExecuteNonQuery();
 
              
-
-                // while (dataRider.Read()) { }
+               
             }
             catch (Exception ex)
             {
