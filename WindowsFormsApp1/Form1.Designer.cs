@@ -34,6 +34,7 @@ namespace WindowsFormsApp1
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
@@ -80,15 +81,15 @@ namespace WindowsFormsApp1
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.HighlightText;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(243, 58);
+            this.dataGridView1.Location = new System.Drawing.Point(270, 58);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(548, 210);
+            this.dataGridView1.Size = new System.Drawing.Size(552, 188);
             this.dataGridView1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(716, 3);
+            this.button1.Location = new System.Drawing.Point(747, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -108,7 +109,7 @@ namespace WindowsFormsApp1
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1, 176);
+            this.label2.Location = new System.Drawing.Point(1, 174);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 3;
@@ -123,14 +124,14 @@ namespace WindowsFormsApp1
             // 
             // textBoxDescription
             // 
-            this.textBoxDescription.Location = new System.Drawing.Point(70, 173);
+            this.textBoxDescription.Location = new System.Drawing.Point(70, 167);
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.Size = new System.Drawing.Size(156, 20);
             this.textBoxDescription.TabIndex = 5;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(151, 245);
+            this.button2.Location = new System.Drawing.Point(151, 238);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 6;
@@ -144,7 +145,7 @@ namespace WindowsFormsApp1
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(716, 460);
+            this.button3.Location = new System.Drawing.Point(747, 450);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 7;
@@ -168,6 +169,7 @@ namespace WindowsFormsApp1
             // textBoxSuma
             // 
             this.textBoxSuma.Location = new System.Drawing.Point(70, 130);
+            this.textBoxSuma.Multiline = true;
             this.textBoxSuma.Name = "textBoxSuma";
             this.textBoxSuma.Size = new System.Drawing.Size(156, 20);
             this.textBoxSuma.TabIndex = 9;
@@ -184,14 +186,14 @@ namespace WindowsFormsApp1
             // 
             // dateTimeFrom
             // 
-            this.dateTimeFrom.Location = new System.Drawing.Point(303, 33);
+            this.dateTimeFrom.Location = new System.Drawing.Point(330, 33);
             this.dateTimeFrom.Name = "dateTimeFrom";
             this.dateTimeFrom.Size = new System.Drawing.Size(135, 20);
             this.dateTimeFrom.TabIndex = 12;
             // 
             // dateTimeTo
             // 
-            this.dateTimeTo.Location = new System.Drawing.Point(497, 32);
+            this.dateTimeTo.Location = new System.Drawing.Point(524, 32);
             this.dateTimeTo.Name = "dateTimeTo";
             this.dateTimeTo.Size = new System.Drawing.Size(146, 20);
             this.dateTimeTo.TabIndex = 13;
@@ -199,7 +201,7 @@ namespace WindowsFormsApp1
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(240, 37);
+            this.label4.Location = new System.Drawing.Point(267, 37);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(57, 13);
             this.label4.TabIndex = 14;
@@ -208,7 +210,7 @@ namespace WindowsFormsApp1
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(444, 37);
+            this.label5.Location = new System.Drawing.Point(471, 37);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 15;
@@ -225,7 +227,7 @@ namespace WindowsFormsApp1
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(645, 32);
+            this.comboBox2.Location = new System.Drawing.Point(676, 32);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(146, 21);
             this.comboBox2.TabIndex = 18;
@@ -233,7 +235,7 @@ namespace WindowsFormsApp1
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(26, 208);
+            this.label6.Location = new System.Drawing.Point(26, 211);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(33, 13);
             this.label6.TabIndex = 19;
@@ -241,7 +243,7 @@ namespace WindowsFormsApp1
             // 
             // dateTimeInsert
             // 
-            this.dateTimeInsert.Location = new System.Drawing.Point(70, 208);
+            this.dateTimeInsert.Location = new System.Drawing.Point(70, 205);
             this.dateTimeInsert.Name = "dateTimeInsert";
             this.dateTimeInsert.Size = new System.Drawing.Size(156, 20);
             this.dateTimeInsert.TabIndex = 20;
@@ -249,7 +251,7 @@ namespace WindowsFormsApp1
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(612, 7);
+            this.checkBox1.Location = new System.Drawing.Point(664, 9);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(77, 17);
             this.checkBox1.TabIndex = 21;
@@ -258,7 +260,7 @@ namespace WindowsFormsApp1
             // 
             // Print
             // 
-            this.Print.Location = new System.Drawing.Point(612, 460);
+            this.Print.Location = new System.Drawing.Point(666, 450);
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(75, 23);
             this.Print.TabIndex = 22;
@@ -308,23 +310,26 @@ namespace WindowsFormsApp1
             this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(243, 274);
+            this.chart1.Location = new System.Drawing.Point(270, 260);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
             series1.Legend = "Legend1";
             series1.Name = "Name";
             series1.YValuesPerPoint = 2;
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(548, 170);
+            this.chart1.Size = new System.Drawing.Size(552, 184);
             this.chart1.TabIndex = 27;
             this.chart1.Text = "chart1";
+            title1.Name = "Title1";
+            this.chart1.Titles.Add(title1);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(834, 520);
+            this.ClientSize = new System.Drawing.Size(834, 486);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.comboBox3);
@@ -353,8 +358,8 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.dataGridView1);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(850, 559);
-            this.MinimumSize = new System.Drawing.Size(850, 559);
+            this.MaximumSize = new System.Drawing.Size(850, 525);
+            this.MinimumSize = new System.Drawing.Size(850, 525);
             this.Name = "Form1";
             this.Text = "Report";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

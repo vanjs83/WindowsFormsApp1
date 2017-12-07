@@ -76,25 +76,21 @@ namespace WindowsFormsApp1
                    BindingSource bsource = new BindingSource();
                    bsource.DataSource = data;              
                    dataGridView1.DataSource = bsource;
-                // Add char
+                // Add char Grafikon
                 if (!checkBox1.Checked)
-                {
-                   
+                {             
                     this.chart1.Series["Name"].XValueMember = "name";
-                    this.chart1.Series["Name"].YValueMembers = "suma";
-                   
+                    this.chart1.Series["Name"].YValueMembers = "suma";             
                 }
                 else
-                {
-                    
+                {              
                     this.chart1.Series["Name"].XValueMember = "name";
                     this.chart1.Series["Name"].YValueMembers = "price";
-                 
                 }
                 this.chart1.DataSource = bsource;
                 chart1.DataBind();
                 adapter.Update(data);
-
+                // Suma consumption
                 if (checkBox1.Checked)
                 {
                     double sum = 0;
@@ -153,13 +149,22 @@ namespace WindowsFormsApp1
         private void button2_Click(object sender, EventArgs e)
         {
             
-            if (this.textBoxName.Text == ""  || this.textBoxSuma.Text == "")
+            double suma;
+            string[] tokens;
+            if (this.textBoxName.Text == ""  || this.textBoxSuma.Text == "" )  
             {
                 MessageBox.Show("Please, Entered all data!", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-           
-                SqlConnection conn = new SqlConnection(GetConnString());
+            else if (double.TryParse(this.textBoxSuma.Text, out suma) == false)
+            {
+                MessageBox.Show("Please, numeric data for Price!", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxSuma.Clear();
+                return;
+            }
+   
+
+            SqlConnection conn = new SqlConnection(GetConnString());
             try
             { 
                 conn.Open();
