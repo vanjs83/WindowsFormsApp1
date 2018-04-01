@@ -1,30 +1,82 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Net;
+using System.Xml;
+using static System.Net.WebRequestMethods;
+
 namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        public int idUser;
+         User _person;
+      
 
-        public Form1(int _idUser)
+        public Form1(User user)
         {
             InitializeComponent();
-            this.idUser = _idUser;
+            this._person  = new Person (user);
             RunTimer();
+              GetCurrency();
+           
         }
+
+
+
+        private void GetCurrency()
+        {
+
+            string url = "http://finance.yahoo.com/webservice/" + "v1/symbols/allcurrencies/quote?format=xml";
+
+            try
+            {
+                // Load the data.
+                XmlDocument doc = new XmlDocument();
+                doc.Load(url);
+
+                // Process the resource nodes.
+                XmlNode root = doc.DocumentElement;
+                string xquery = "descendant::resource[@classname='Quote']";
+                foreach (XmlNode node in root.SelectNodes(xquery))
+                {
+                    const string name_query =
+                        "descendant::field[@name='name']";
+                    const string price_query =
+                        "descendant::field[@name='price']";
+                    string name =
+                        node.SelectSingleNode(name_query).InnerText;
+                    string price =
+                        node.SelectSingleNode(price_query).InnerText;
+                    // decimal inverse = 1m / decimal.Parse(price);
+
+                    ListViewItem item = listView1.Items.Add(name);
+                    item.SubItems.Add(price);
+
+                    // item.SubItems.Add(inverse.ToString("f6"));
+                }
+                listView1.View = View.Details;
+                listView1.GridLines = true;
+                listView1.FullRowSelect = true;
+
+                // Sort.
+                //listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
+                //listView1.FullRowSelect = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Read Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+        }
+
 
         private void RunTimer()
         {
             timer1.Interval = 1000;
-            timer1.Tick += new EventHandler(ShowTime);
+            timer1.Tick += new EventHandler(ShowTime);  
             timer1.Start();
         }
 
@@ -33,8 +85,56 @@ namespace WindowsFormsApp1
         }
 
         private string GetConnString() {//connection string on database VSITESTUDNET
-                                        // return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
-            return "workstation id=payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=payments.mssql.somee.com;persist security info=False;initial catalog=payments";
+                                        return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
+           // return "workstation id=payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=payments.mssql.somee.com;persist security info=False;initial catalog=payments";
+        }
+
+        private void ShowCounts(SqlConnection conn, SqlDataAdapter adapter) {
+
+            SqlCommand command = new SqlCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "ShowNameCounts";
+            command.Parameters.AddWithValue("@idUser", this._person.Id);
+            adapter.SelectCommand = command;
+            command.Connection = conn;
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+            comboBoxCount.DisplayMember = "Counts";
+            comboBoxCount.DataSource = dataTable;
+            
+        }
+        private void ShowCategory(SqlConnection conn, SqlDataAdapter adapter)
+        {
+         
+
+            SqlCommand command = new SqlCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "ShowNameCategory";
+            command.Parameters.AddWithValue("@idUser", this._person.Id);
+            adapter.SelectCommand = command;
+            command.Connection = conn;
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+           // List<User> user = new List<WindowsFormsApp1.User>();
+           // user = dataTable.Rows.Add(User).all
+
+            comboBoxCategory.DisplayMember = "Category";
+            comboBoxCategory.DataSource = dataTable;
+        }
+
+        private void ShowTypeOfPay(SqlConnection conn, SqlDataAdapter adapter)
+        {
+            SqlCommand command = new SqlCommand();
+            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = "ShowNameTypeOfPay";
+            command.Parameters.AddWithValue("@idUser", this._person.Id);
+            adapter.SelectCommand = command;
+            command.Connection = conn;
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+            comboBoxPay.DisplayMember = "Pay";
+            comboBoxPay.DataSource = dataTable;
         }
 
         //SELECT QUERY
@@ -60,9 +160,11 @@ namespace WindowsFormsApp1
             // SEND PARAMETARS INTO PROCEDURE
             comm.Parameters.AddWithValue("@from", this.dateTimeFrom.Value);
             comm.Parameters.AddWithValue("@to",this.dateTimeTo.Value);
-            comm.Parameters.AddWithValue("@name", this.comboBox2.Text.Trim());
-            comm.Parameters.AddWithValue("@CountName", this.comboBox3.Text.Trim());
-            comm.Parameters.AddWithValue("@idUser", this.idUser);
+            comm.Parameters.AddWithValue("@nameItem", this.comboBoxItem.Text.Trim());
+            comm.Parameters.AddWithValue("@CountName", this.comboBoxCount.Text.Trim());
+            comm.Parameters.AddWithValue("@CategoryName", this.comboBoxCategory.Text.Trim());
+            comm.Parameters.AddWithValue("@PayName", this.comboBoxPay.Text.Trim());
+            comm.Parameters.AddWithValue("@idUser", this._person.Id);
       
             comm.Connection = conn;
                 try
@@ -78,14 +180,14 @@ namespace WindowsFormsApp1
                    dataGridView1.DataSource = bsource;
                 // Add char Grafikon
                 if (!checkBox1.Checked)
-                {             
-                    this.chart1.Series["Name"].XValueMember = "name";
+                {
+                    this.chart1.Series["Name"].XValueMember = "Item";
                     this.chart1.Series["Name"].YValueMembers = "suma";             
                 }
                 else
                 {              
-                    this.chart1.Series["Name"].XValueMember = "name";
-                    this.chart1.Series["Name"].YValueMembers = "price";
+                    this.chart1.Series["Name"].XValueMember = "Item";
+                    this.chart1.Series["Name"].YValueMembers = "Price";
                 }
                 this.chart1.DataSource = bsource;
                 chart1.DataBind();
@@ -93,47 +195,49 @@ namespace WindowsFormsApp1
                 // Suma consumption
                 if (checkBox1.Checked)
                 {
-                    double sum = 0;
-                    for (int i = 0; i < dataGridView1.Rows.Count; ++i)
+                    double sumPrice = 0;
+                    int numItem = 0; //Ako postoji redak racunaj
+                    if (dataGridView1.Rows.Count > 0)
                     {
-                        sum += Convert.ToDouble(dataGridView1.Rows[i].Cells["price"].Value.ToString());
+                        for (int i = 0; i < dataGridView1.Rows.Count; ++i)
+                        {   // nadodavanje izracuna
+                            sumPrice += Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                            numItem += Convert.ToInt32(dataGridView1.Rows[i].Cells["Number"].Value.ToString());
+                        }
+                        data.Rows.Add();
+                        this.dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[3].Value = String.Format("{0:0.00}", sumPrice);
+                        this.dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[4].Value = String.Format("{0}", numItem);
                     }
-                    data.Rows.Add();
-                    this.dataGridView1.Rows[dataGridView1.Rows.Count-1].Cells[2].Value = String.Format("{0:0.00}", sum);
-
                 }
-               
-                //SHOW NAME 
+
+                //List<User> user = new List<WindowsFormsApp1.User>();
+                //user = data.Rows.OfType<DataTable>().Select(dr => dr.Field<User>("name")).ToList();
+
+                //SHOW NAME ITEM 
                 SqlCommand com = new SqlCommand();
                 com.CommandType = CommandType.StoredProcedure;
                 com.CommandText = "ShowName";
-                com.Parameters.AddWithValue("@idUser", this.idUser);
-                com.Parameters.AddWithValue("@NameCounts", this.comboBox3.Text.Trim());
+                com.Parameters.AddWithValue("@idUser", this._person.Id);
+                com.Parameters.AddWithValue("@NameCounts", this.comboBoxCount.Text.Trim());
                 adapter.SelectCommand = com;
                 com.Connection = conn;
                 DataTable table = new DataTable();
                 adapter.Fill(table);
-
-                comboBox1.DisplayMember = "name";
+              
+                comboBox1.DisplayMember = "Item";
                 comboBox1.DataSource = table;
-            
-                comboBox2.DisplayMember = "name";
-                comboBox2.DataSource = table;
+                comboBoxItem.DisplayMember = "Item";
+                comboBoxItem.DataSource = table;
 
-                //SHOW COUNTS
-                SqlCommand command = new SqlCommand();
-                command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "ShowNameCounts";
-                command.Parameters.AddWithValue("@idUser", this.idUser);
-                adapter.SelectCommand = command;
-                command.Connection = conn;
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-                comboBox3.DisplayMember = "Counts";
-                comboBox3.DataSource = dataTable;
-                
+                //SHOW COUNTS CATEGORY PAY
+                ShowCounts(conn, adapter);
+                //SHOW CATEGORY 
+                ShowCategory(conn, adapter);
+                // SHOW TYPE OF PAY
+                ShowTypeOfPay(conn, adapter);
+    
             }
-                catch (Exception ex)
+            catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message,"Faild",MessageBoxButtons.OKCancel,MessageBoxIcon.Error);
 
@@ -144,14 +248,52 @@ namespace WindowsFormsApp1
                 }
 
          }
-       
+                //poziv funkcije spremi kategoriju
+        private int SaveCategory(SqlConnection conn) {
+
+            // spremi kategoriju ako ne postoji
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = "InsertCategory";
+            cmd.Parameters.AddWithValue("@iduser", this._person.Id);
+            cmd.Parameters.AddWithValue("@name", this.comboBoxCategory.Text.Trim());
+            return cmd.ExecuteNonQuery();
+
+        }
+           // SPREMI NACIN PLACANJA
+        private int SaveTypeOfPay(SqlConnection conn) {
+
+            //Spremi način plačanja ako ne postoji
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = conn;
+            cm.CommandType = CommandType.StoredProcedure;
+            cm.CommandText = "InsertTypeOfPay";
+            cm.Parameters.AddWithValue("@namePay", this.comboBoxPay.Text.Trim());
+            return cm.ExecuteNonQuery();
+
+        }
+
+        //Spremi Counts ako ne postoji
+        private int SaveCounts(SqlConnection conn) {
+
+            SqlCommand cmdCount = new SqlCommand();
+            cmdCount.Connection = conn;
+            cmdCount.CommandType = CommandType.StoredProcedure;
+            cmdCount.CommandText = "InsertCounts";
+            cmdCount.Parameters.AddWithValue("@CategoryName", this.comboBoxCategory.Text.Trim());
+            cmdCount.Parameters.AddWithValue("@NameCount", this.comboBoxCount.Text.Trim());
+            return cmdCount.ExecuteNonQuery();
+
+        }
+
+
         //INSERT DATABASE
         private void button2_Click(object sender, EventArgs e)
         {
-            
+
             double suma;
-            string[] tokens;
-            if (this.textBoxName.Text == ""  || this.textBoxSuma.Text == "" )  
+            if (string.IsNullOrEmpty(this.textBoxName.Text) || string.IsNullOrEmpty(this.textBoxSuma.Text))
             {
                 MessageBox.Show("Please, Entered all data!", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -162,26 +304,58 @@ namespace WindowsFormsApp1
                 textBoxSuma.Clear();
                 return;
             }
-   
-
+             
             SqlConnection conn = new SqlConnection(GetConnString());
+            conn.Open();
             try
             { 
-                conn.Open();
-                SqlCommand cmd= new SqlCommand();
-                cmd.Connection = conn;
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "InsertPayments";
-                cmd.Parameters.AddWithValue("@idUser", this.idUser);
-                cmd.Parameters.AddWithValue("@NameCount", this.comboBox3.Text.Trim());
-                cmd.Parameters.AddWithValue("@name", this.textBoxName.Text.Trim());
-                cmd.Parameters.AddWithValue("@suma", this.textBoxSuma.Text.Trim());
-                cmd.Parameters.AddWithValue("@datum", this.dateTimeInsert.Value.Date.ToString("yyyy-MM-dd HH:mm"));
-                cmd.Parameters.AddWithValue("@description", this.textBoxDescription.Text.Trim());
-                cmd.ExecuteNonQuery();
+          
+                if (!string.IsNullOrEmpty(this.comboBoxCategory.Text))
+                {
+                    //poziv funkcije spremi kategoriju
+                    int numExecute = SaveCategory(conn);
+                    if (numExecute != -1)
+                        MessageBox.Show("This Category "+ comboBoxCategory.Text + " already exists !", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    else if(numExecute == -1)
+                        MessageBox.Show("This Category " + comboBoxCategory.Text + " is now save !", "OK!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
 
-             
-               
+                if (!string.IsNullOrEmpty(this.comboBoxPay.Text))
+                {
+                    int numExecute = SaveTypeOfPay(conn);
+                    //poziv funkcije spremi način plačanja
+                    if (numExecute != -1)
+                    {
+                        MessageBox.Show("This type of pay " + this.comboBoxPay.Text + " already exists !", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else if(numExecute == -1) 
+                        MessageBox.Show("This type of pay " + comboBoxPay.Text + " is now save !", "OK!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+           
+                if (!string.IsNullOrEmpty(this.comboBoxCount.Text))
+                {      //Poziv funkcije naziv računa
+                    int numExecute = SaveCounts(conn);
+                    if (numExecute != -1)
+                    {
+                        MessageBox.Show("This Counts " + this.comboBoxCount.Text + " already exists !", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else if(numExecute == -1)
+                        MessageBox.Show("This Counts " + this.comboBoxCount.Text + " is now save !", "ok", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                SqlCommand cmm = new SqlCommand();
+                cmm.Connection = conn;
+                cmm.CommandType = CommandType.StoredProcedure;
+                cmm.CommandText = "InsertPayments";
+                cmm.Parameters.AddWithValue("@NamePay", this.comboBoxPay.Text.Trim());
+                cmm.Parameters.AddWithValue("@NameCount", this.comboBoxCount.Text.Trim());
+                cmm.Parameters.AddWithValue("@name", this.textBoxName.Text.Trim());
+                cmm.Parameters.AddWithValue("@suma", this.textBoxSuma.Text.Trim());
+                cmm.Parameters.AddWithValue("@datum", this.dateTimeInsert.Value.Date.ToString("yyyy-MM-dd HH:mm"));
+                cmm.Parameters.AddWithValue("@description", this.textBoxDescription.Text.Trim());
+                cmm.ExecuteNonQuery();            
+                               
             }
             catch (Exception ex)
             {
@@ -195,6 +369,7 @@ namespace WindowsFormsApp1
                 this.textBoxName.Clear();
                 this.textBoxSuma.Clear();
                 this.textBoxDescription.Clear();
+                
             }
         }
 
@@ -205,7 +380,7 @@ namespace WindowsFormsApp1
             Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
             // creating new WorkBook within Excel application  
             Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
-            // creating new Excelsheet in workbook  
+            // creating new Excelsheet in workbook      
             Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
             // see the excel sheet behind the program  
             app.Visible = true;
@@ -252,22 +427,21 @@ namespace WindowsFormsApp1
             conn.Open();
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = "DeletePayments";
-                // SEND PARAMETAR INTO PROCEDURE 
-                cmd.Parameters.AddWithValue("@name", this.comboBox1.Text.Trim());
-                cmd.Parameters.AddWithValue("@NameCounts", comboBox3.Text.Trim());
+                // SEND PARAMETAR INTO PROCEDURE     item for delete
+                cmd.Parameters.AddWithValue("@NameItem", this.comboBox1.Text.Trim());
+                cmd.Parameters.AddWithValue("@NameCounts", this.dataGridView1.CurrentRow.Cells[0].Value);
                 cmd.Parameters.AddWithValue("@id", this.dataGridView1.CurrentRow.Cells[1].Value);
+                cmd.Parameters.AddWithValue("@NameCategory", this.dataGridView1.CurrentRow.Cells[2].Value);
+                cmd.Parameters.AddWithValue("@TypeOfPay", this.dataGridView1.CurrentRow.Cells[3].Value);
+                cmd.Parameters.AddWithValue("@UserId", this._person.Id);
+        
                 cmd.Connection = conn;
-                int numberEffected= cmd.ExecuteNonQuery();
+                int numberEffected = cmd.ExecuteNonQuery();
 
-                if (numberEffected == 0)
-                {
-                    MessageBox.Show("Try again!", "Faild!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                }
-
-
+                if(numberEffected != -1)
+                    MessageBox.Show(this.comboBox1.Text, "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex)
+              catch (Exception ex)
             {
                 MessageBox.Show(ex.Message,"Error",MessageBoxButtons.OKCancel,MessageBoxIcon.Error);
             }
@@ -276,7 +450,7 @@ namespace WindowsFormsApp1
             {
                 conn.Close();              
             }
-            MessageBox.Show(this.comboBox1.Text, "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           
         }
    
 
