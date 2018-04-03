@@ -24,6 +24,22 @@ namespace WindowsFormsApp1
            // return "workstation id=payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=payments.mssql.somee.com;persist security info=False;initial catalog=payments";
         }
 
+        public static void LogMessageToFile(string msg)
+        {
+
+            System.IO.StreamWriter sw = System.IO.File.AppendText(@"MyLogFile.txt");
+            try
+            {
+                string logLine = System.String.Format(
+                    "{0:G}: {1}.", System.DateTime.Now, msg);
+                sw.WriteLine(logLine);
+            }
+            finally
+            {
+                sw.Close();
+            }
+        }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -72,8 +88,8 @@ namespace WindowsFormsApp1
             if (!checkBox1.Checked)
             {
                 // Provjeravam korisnika
-                cmd.CommandText = "ShowLogin";       
-
+                cmd.CommandText = "ShowLogin";
+                
             }
             else
             {         //ubacujem novog korisnika
@@ -90,12 +106,16 @@ namespace WindowsFormsApp1
             {
                 try
                 {
+                    LogMessageToFile("Login User: " + user.Username);
                     SqlDataAdapter adapter = new SqlDataAdapter();
                     adapter.SelectCommand = cmd;
                     DataTable data = new DataTable();
                     adapter.Fill(data);
+
+
                     if (data.Rows.Count == 1)
                     {
+                        LogMessageToFile("Login User: " + user.Username + " success Login {Line: 114}");
                         int id = int.Parse(cmd.Parameters["@ID"].Value.ToString());// send id user
                         user.Id = id;
                         Form1 form1 = new Form1(user);
@@ -105,11 +125,14 @@ namespace WindowsFormsApp1
                     else
                     {
                         MessageBox.Show("Check your username and password or rule", "Faild", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                        LogMessageToFile("Login User: " + user.Username + " not success Login {Line: 114}");
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                    LogMessageToFile("Login User " + user.Username + " not success, Error: " + ex.Message);//Logging
+                    
                 }
                 finally
                 {

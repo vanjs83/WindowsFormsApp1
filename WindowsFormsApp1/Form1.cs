@@ -4,15 +4,13 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Net;
-using System.Xml;
-using static System.Net.WebRequestMethods;
-using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace WindowsFormsApp1
 {
@@ -20,27 +18,32 @@ namespace WindowsFormsApp1
     {
          User _person;
       
-
         public Form1(User user)
         {
             InitializeComponent();
             this._person  = new Person (user);
             RunTimer();
-            //     GetCurrency();
+            
             get_response();    
         }
 
-        void get_response()
+        private void get_response()
         {
             WebClient wp = new WebClient();
             string url = "http://api.hnb.hr/tecajn?valuta=EUR&valuta=USD&valuta=GBP&valuta=CHF";
             var response = wp.DownloadString(url);
-            get_data(response);
-}
+             get_data(response);
+           
+        }
 
 
-        void get_data(string response)
+        private void get_data(string response)
         {
+            if (string.IsNullOrEmpty(response))
+            {
+                throw new ArgumentException("message", nameof(response));
+            }
+
             JArray a = JArray.Parse(response);
 
             foreach (JObject o in a.Children<JObject>())
@@ -49,102 +52,16 @@ namespace WindowsFormsApp1
                 {
                     string name = p.Name;
                     string value = (string)p.Value;
-                        ListViewItem item = listView1.Items.Add(name);
-                        item.SubItems.Add(value);
-                    
+                    ListViewItem item = listView1.Items.Add(name);
+                    item.SubItems.Add(value);
                 }
             }
 
             listView1.View = View.Details;
-                listView1.GridLines = true;
-                listView1.FullRowSelect = true;
+            listView1.GridLines = true;
+            listView1.FullRowSelect = true;
 
         }
-
-
-
-        //private void GetCurrency()
-        //{
-        //    string url = "http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml";
-        //    XDocument doc = XDocument.Load(url);
-
-        //    XNamespace gesmes = "http://www.gesmes.org/xml/2002-08-01";
-        //   XNamespace ns = "http://www.ecb.int/vocabulary/2002-08-01/eurofxref";
-
-        //    var cubes = doc.Descendants(ns + "Cube")
-        //                   .Where(x => x.Attribute("currency") != null)
-        //                   .Select(x => new {
-        //                       Currency = (string)x.Attribute("currency"),
-        //                       Rate = (decimal)x.Attribute("rate")
-        //                   });
-
-        //    foreach (var result in cubes)
-        //    {
-
-        //        ListViewItem item = listView1.Items.Add(result.Currency);
-        //        item.SubItems.Add(result.Rate.ToString());
-
-        //        // item.SubItems.Add(inverse.ToString("f6"));
-        //    }
-        //    listView1.View = View.Details;
-        //    listView1.GridLines = true;
-        //    listView1.FullRowSelect = true;
-        //}
-
-
-
-
-
-
-
-
-        //private void GetCurrency()
-        //{
-
-        //    string url = "http://finance.yahoo.com/webservice/" + "v1/symbols/allcurrencies/quote?format=xml";
-
-        //    try
-        //    {
-        //        // Load the data.
-        //        XmlDocument doc = new XmlDocument();
-        //        doc.Load(url);
-
-        //        // Process the resource nodes.
-        //        XmlNode root = doc.DocumentElement;
-        //        string xquery = "descendant::resource[@classname='Quote']";
-        //        foreach (XmlNode node in root.SelectNodes(xquery))
-        //        {
-        //            const string name_query =
-        //                "descendant::field[@name='name']";
-        //            const string price_query =
-        //                "descendant::field[@name='price']";
-        //            string name =
-        //                node.SelectSingleNode(name_query).InnerText;
-        //            string price =
-        //                node.SelectSingleNode(price_query).InnerText;
-        //            // decimal inverse = 1m / decimal.Parse(price);
-
-        //            ListViewItem item = listView1.Items.Add(name);
-        //            item.SubItems.Add(price);
-
-        //            // item.SubItems.Add(inverse.ToString("f6"));
-        //        }
-        //        listView1.View = View.Details;
-        //        listView1.GridLines = true;
-        //        listView1.FullRowSelect = true;
-
-        //        // Sort.
-        //        //listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
-        //        //listView1.FullRowSelect = true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message, "Read Error",
-        //            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        //    }
-
-        //}
-
 
         private void RunTimer()
         {
@@ -189,8 +106,9 @@ namespace WindowsFormsApp1
             DataTable dataTable = new DataTable();
             adapter.Fill(dataTable);
 
-           // List<User> user = new List<WindowsFormsApp1.User>();
-           // user = dataTable.Rows.Add(User).all
+
+            //List<string> list = new List<string>();
+            //list = dataTable.Rows.OfType<DataRow>().Select(dr => dr.Field<string>("Category")).ToList();
 
             comboBoxCategory.DisplayMember = "Category";
             comboBoxCategory.DataSource = dataTable;
@@ -387,9 +305,9 @@ namespace WindowsFormsApp1
                 {
                     //poziv funkcije spremi kategoriju
                     int numExecute = SaveCategory(conn);
-                    if (numExecute != -1)
-                        MessageBox.Show("This Category "+ comboBoxCategory.Text + " already exists !", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    else if(numExecute == -1)
+                    if (numExecute == -1)
+                        MessageBox.Show("Category " + comboBoxCategory.Text, "OK", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    else if(numExecute != -1)
                         MessageBox.Show("This Category " + comboBoxCategory.Text + " is now save !", "OK!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
@@ -397,11 +315,11 @@ namespace WindowsFormsApp1
                 {
                     int numExecute = SaveTypeOfPay(conn);
                     //poziv funkcije spremi način plačanja
-                    if (numExecute != -1)
+                    if (numExecute == -1)
                     {
-                        MessageBox.Show("This type of pay " + this.comboBoxPay.Text + " already exists !", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Type of pay " + this.comboBoxPay.Text, "OK", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
-                    else if(numExecute == -1) 
+                    else if(numExecute != -1) 
                         MessageBox.Show("This type of pay " + comboBoxPay.Text + " is now save !", "OK!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
@@ -409,12 +327,12 @@ namespace WindowsFormsApp1
                 if (!string.IsNullOrEmpty(this.comboBoxCount.Text))
                 {      //Poziv funkcije naziv računa
                     int numExecute = SaveCounts(conn);
-                    if (numExecute != -1)
+                    if (numExecute == -1)
                     {
-                        MessageBox.Show("This Counts " + this.comboBoxCount.Text + " already exists !", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Counts: " + this.comboBoxCount.Text, "OK!" , MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
-                    else if(numExecute == -1)
-                        MessageBox.Show("This Counts " + this.comboBoxCount.Text + " is now save !", "ok", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    else if(numExecute != -1)
+                        MessageBox.Show("Counts " + this.comboBoxCount.Text + " is now save !", "ok", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
                 SqlCommand cmm = new SqlCommand();
@@ -427,8 +345,10 @@ namespace WindowsFormsApp1
                 cmm.Parameters.AddWithValue("@suma", this.textBoxSuma.Text.Trim());
                 cmm.Parameters.AddWithValue("@datum", this.dateTimeInsert.Value.Date.ToString("yyyy-MM-dd HH:mm"));
                 cmm.Parameters.AddWithValue("@description", this.textBoxDescription.Text.Trim());
-                cmm.ExecuteNonQuery();            
-                               
+                 int numQuery = cmm.ExecuteNonQuery();            
+                   if(numQuery != -1 )
+                    MessageBox.Show(this.textBoxName.Text, "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             }
             catch (Exception ex)
             {
@@ -437,8 +357,6 @@ namespace WindowsFormsApp1
             finally
             {
                 conn.Close();
-                MessageBox.Show(this.textBoxName.Text,"Saved",MessageBoxButtons.OK,MessageBoxIcon.Information);
-
                 this.textBoxName.Clear();
                 this.textBoxSuma.Clear();
                 this.textBoxDescription.Clear();
@@ -526,7 +444,6 @@ namespace WindowsFormsApp1
            
         }
    
-
         private void Print_Click(object sender, EventArgs e)
         {
             //Open the print dialog
@@ -545,8 +462,20 @@ namespace WindowsFormsApp1
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             Bitmap btm = new Bitmap(this.dataGridView1.Width, this.dataGridView1.Height);
-            dataGridView1.DrawToBitmap(btm,new Rectangle(0, 0, this.dataGridView1.Width, this.dataGridView1.Height));
+            dataGridView1.DrawToBitmap(btm, new System.Drawing.Rectangle(0, 0, this.dataGridView1.Width, this.dataGridView1.Height));
             e.Graphics.DrawImage(btm, 10, 10);
+
+            //Document doc = new Document(iTextSharp.text.PageSize.A4, 10, 10, 10, 10);
+            //PdfWriter wri = PdfWriter.GetInstance(doc, new FileStream("Payments.pdf", FileMode.Create));
+            //doc.Open();
+            //PdfPTable table = new PdfPTable(dataGridView1.ColumnCount);
+            ////add headers
+            //for (int j = 0; j < dataGridView1.ColumnCount; j++)
+            //{
+            //    table.AddCell(new Phrase(dataGridView1.colu))
+            //}
+
+
         }    
     }
 }

@@ -44,7 +44,6 @@ namespace WindowsFormsApp1
             this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.button3 = new System.Windows.Forms.Button();
             this.printDialog1 = new System.Windows.Forms.PrintDialog();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxSuma = new System.Windows.Forms.TextBox();
@@ -74,6 +73,7 @@ namespace WindowsFormsApp1
             this.listView1 = new System.Windows.Forms.ListView();
             this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
@@ -92,12 +92,12 @@ namespace WindowsFormsApp1
             this.dataGridView1.Location = new System.Drawing.Point(330, 58);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(642, 188);
+            this.dataGridView1.Size = new System.Drawing.Size(705, 213);
             this.dataGridView1.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(897, 29);
+            this.button1.Location = new System.Drawing.Point(960, 31);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -150,16 +150,6 @@ namespace WindowsFormsApp1
             // printDocument1
             // 
             this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(897, 451);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "Excel";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // printDialog1
             // 
@@ -235,7 +225,7 @@ namespace WindowsFormsApp1
             // comboBoxItem
             // 
             this.comboBoxItem.FormattingEnabled = true;
-            this.comboBoxItem.Location = new System.Drawing.Point(745, 29);
+            this.comboBoxItem.Location = new System.Drawing.Point(805, 31);
             this.comboBoxItem.Name = "comboBoxItem";
             this.comboBoxItem.Size = new System.Drawing.Size(146, 21);
             this.comboBoxItem.TabIndex = 18;
@@ -259,7 +249,7 @@ namespace WindowsFormsApp1
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(897, 6);
+            this.checkBox1.Location = new System.Drawing.Point(960, 6);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(77, 17);
             this.checkBox1.TabIndex = 21;
@@ -268,7 +258,7 @@ namespace WindowsFormsApp1
             // 
             // Print
             // 
-            this.Print.Location = new System.Drawing.Point(816, 451);
+            this.Print.Location = new System.Drawing.Point(860, 476);
             this.Print.Name = "Print";
             this.Print.Size = new System.Drawing.Size(75, 23);
             this.Print.TabIndex = 22;
@@ -318,7 +308,7 @@ namespace WindowsFormsApp1
             this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(330, 260);
+            this.chart1.Location = new System.Drawing.Point(330, 279);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
@@ -327,7 +317,7 @@ namespace WindowsFormsApp1
             series1.YValueMembers = "suma";
             series1.YValuesPerPoint = 2;
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(642, 184);
+            this.chart1.Size = new System.Drawing.Size(705, 184);
             this.chart1.TabIndex = 27;
             this.chart1.Text = "chart1";
             title1.Name = "Title1";
@@ -370,20 +360,20 @@ namespace WindowsFormsApp1
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(802, 10);
+            this.label10.Location = new System.Drawing.Point(769, 34);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(27, 13);
+            this.label10.Size = new System.Drawing.Size(30, 13);
             this.label10.TabIndex = 32;
-            this.label10.Text = "Item";
+            this.label10.Text = "Item:";
             // 
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.name,
             this.value});
-            this.listView1.Location = new System.Drawing.Point(980, 58);
+            this.listView1.Location = new System.Drawing.Point(1063, 58);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(229, 386);
+            this.listView1.Size = new System.Drawing.Size(229, 405);
             this.listView1.TabIndex = 33;
             this.listView1.UseCompatibleStateImageBehavior = false;
             // 
@@ -397,12 +387,22 @@ namespace WindowsFormsApp1
             this.value.Text = "value";
             this.value.Width = 115;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(960, 476);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 7;
+            this.button3.Text = "Excel";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1304, 486);
+            this.ClientSize = new System.Drawing.Size(1304, 511);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -437,8 +437,8 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.dataGridView1);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(1320, 525);
-            this.MinimumSize = new System.Drawing.Size(1320, 525);
+            this.MaximumSize = new System.Drawing.Size(1320, 550);
+            this.MinimumSize = new System.Drawing.Size(1320, 550);
             this.Name = "Form1";
             this.Text = "Report";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
