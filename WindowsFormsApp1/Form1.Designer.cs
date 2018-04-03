@@ -72,8 +72,8 @@ namespace WindowsFormsApp1
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.Currency = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
@@ -92,7 +92,7 @@ namespace WindowsFormsApp1
             this.dataGridView1.Location = new System.Drawing.Point(330, 58);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(644, 188);
+            this.dataGridView1.Size = new System.Drawing.Size(642, 188);
             this.dataGridView1.TabIndex = 0;
             // 
             // button1
@@ -379,30 +379,30 @@ namespace WindowsFormsApp1
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Currency,
-            this.Value});
+            this.name,
+            this.value});
             this.listView1.Location = new System.Drawing.Point(980, 58);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(229, 386);
             this.listView1.TabIndex = 33;
             this.listView1.UseCompatibleStateImageBehavior = false;
             // 
-            // Currency
+            // name
             // 
-            this.Currency.Text = "Currency";
-            this.Currency.Width = 100;
+            this.name.Text = "name";
+            this.name.Width = 115;
             // 
-            // Value
+            // value
             // 
-            this.Value.Text = "Value";
-            this.Value.Width = 100;
+            this.value.Text = "value";
+            this.value.Width = 115;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1348, 486);
+            this.ClientSize = new System.Drawing.Size(1304, 486);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -437,8 +437,8 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.dataGridView1);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(1364, 525);
-            this.MinimumSize = new System.Drawing.Size(1364, 525);
+            this.MaximumSize = new System.Drawing.Size(1320, 525);
+            this.MinimumSize = new System.Drawing.Size(1320, 525);
             this.Name = "Form1";
             this.Text = "Report";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -486,8 +486,8 @@ namespace WindowsFormsApp1
         private Label label9;
         private Label label10;
         private ListView listView1;
-        private ColumnHeader Currency;
-        private ColumnHeader Value;
+        private ColumnHeader name;
+        private ColumnHeader value;
     }
 }
 

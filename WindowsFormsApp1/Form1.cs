@@ -6,6 +6,13 @@ using System.Data.SqlClient;
 using System.Net;
 using System.Xml;
 using static System.Net.WebRequestMethods;
+using System.Xml.Linq;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace WindowsFormsApp1
 {
@@ -19,58 +26,124 @@ namespace WindowsFormsApp1
             InitializeComponent();
             this._person  = new Person (user);
             RunTimer();
-              GetCurrency();
-           
+            //     GetCurrency();
+            get_response();    
         }
 
-
-
-        private void GetCurrency()
+        void get_response()
         {
+            WebClient wp = new WebClient();
+            string url = "http://api.hnb.hr/tecajn?valuta=EUR&valuta=USD&valuta=GBP&valuta=CHF";
+            var response = wp.DownloadString(url);
+            get_data(response);
+}
 
-            string url = "http://finance.yahoo.com/webservice/" + "v1/symbols/allcurrencies/quote?format=xml";
 
-            try
+        void get_data(string response)
+        {
+            JArray a = JArray.Parse(response);
+
+            foreach (JObject o in a.Children<JObject>())
             {
-                // Load the data.
-                XmlDocument doc = new XmlDocument();
-                doc.Load(url);
-
-                // Process the resource nodes.
-                XmlNode root = doc.DocumentElement;
-                string xquery = "descendant::resource[@classname='Quote']";
-                foreach (XmlNode node in root.SelectNodes(xquery))
+                foreach (JProperty p in o.Properties())
                 {
-                    const string name_query =
-                        "descendant::field[@name='name']";
-                    const string price_query =
-                        "descendant::field[@name='price']";
-                    string name =
-                        node.SelectSingleNode(name_query).InnerText;
-                    string price =
-                        node.SelectSingleNode(price_query).InnerText;
-                    // decimal inverse = 1m / decimal.Parse(price);
-
-                    ListViewItem item = listView1.Items.Add(name);
-                    item.SubItems.Add(price);
-
-                    // item.SubItems.Add(inverse.ToString("f6"));
+                    string name = p.Name;
+                    string value = (string)p.Value;
+                        ListViewItem item = listView1.Items.Add(name);
+                        item.SubItems.Add(value);
+                    
                 }
-                listView1.View = View.Details;
+            }
+
+            listView1.View = View.Details;
                 listView1.GridLines = true;
                 listView1.FullRowSelect = true;
 
-                // Sort.
-                //listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
-                //listView1.FullRowSelect = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Read Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-
         }
+
+
+
+        //private void GetCurrency()
+        //{
+        //    string url = "http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml";
+        //    XDocument doc = XDocument.Load(url);
+
+        //    XNamespace gesmes = "http://www.gesmes.org/xml/2002-08-01";
+        //   XNamespace ns = "http://www.ecb.int/vocabulary/2002-08-01/eurofxref";
+
+        //    var cubes = doc.Descendants(ns + "Cube")
+        //                   .Where(x => x.Attribute("currency") != null)
+        //                   .Select(x => new {
+        //                       Currency = (string)x.Attribute("currency"),
+        //                       Rate = (decimal)x.Attribute("rate")
+        //                   });
+
+        //    foreach (var result in cubes)
+        //    {
+
+        //        ListViewItem item = listView1.Items.Add(result.Currency);
+        //        item.SubItems.Add(result.Rate.ToString());
+
+        //        // item.SubItems.Add(inverse.ToString("f6"));
+        //    }
+        //    listView1.View = View.Details;
+        //    listView1.GridLines = true;
+        //    listView1.FullRowSelect = true;
+        //}
+
+
+
+
+
+
+
+
+        //private void GetCurrency()
+        //{
+
+        //    string url = "http://finance.yahoo.com/webservice/" + "v1/symbols/allcurrencies/quote?format=xml";
+
+        //    try
+        //    {
+        //        // Load the data.
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(url);
+
+        //        // Process the resource nodes.
+        //        XmlNode root = doc.DocumentElement;
+        //        string xquery = "descendant::resource[@classname='Quote']";
+        //        foreach (XmlNode node in root.SelectNodes(xquery))
+        //        {
+        //            const string name_query =
+        //                "descendant::field[@name='name']";
+        //            const string price_query =
+        //                "descendant::field[@name='price']";
+        //            string name =
+        //                node.SelectSingleNode(name_query).InnerText;
+        //            string price =
+        //                node.SelectSingleNode(price_query).InnerText;
+        //            // decimal inverse = 1m / decimal.Parse(price);
+
+        //            ListViewItem item = listView1.Items.Add(name);
+        //            item.SubItems.Add(price);
+
+        //            // item.SubItems.Add(inverse.ToString("f6"));
+        //        }
+        //        listView1.View = View.Details;
+        //        listView1.GridLines = true;
+        //        listView1.FullRowSelect = true;
+
+        //        // Sort.
+        //        //listView1.Sorting = System.Windows.Forms.SortOrder.Ascending;
+        //        //listView1.FullRowSelect = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message, "Read Error",
+        //            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        //    }
+
+        //}
 
 
         private void RunTimer()
