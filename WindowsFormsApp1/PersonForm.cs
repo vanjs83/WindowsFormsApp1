@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -32,14 +33,14 @@ namespace WindowsFormsApp1
                 string.IsNullOrEmpty(this.textBoxOIB.Text) || string.IsNullOrEmpty(this.textBoxMob.Text) )
             {
                 MessageBox.Show("Please, put all information", "Faild", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                Form2.LogMessageToFile("Validation not success" + " Line 30");
+                Form2.LogMessageToFile("Validation not success " +"not all field populate "+ " Line 30");
                 return;
 
             }
             else if (!Regex.IsMatch(this.textBoxMob.Text, @"^\d") || !Regex.IsMatch(this.textBoxOIB.Text, @"^\d{11}$") || this.textBoxOIB.TextLength != 11)
             {
                 MessageBox.Show("Please, put only digital number  for OIB (11) and Tel", "Faild", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                Form2.LogMessageToFile("Validation not success" + " Line 39");
+                Form2.LogMessageToFile("Validation not success" + " not numerc nuber insert"+ " Line 39");
                 return;
             }
             Form2.LogMessageToFile("Validation success");
@@ -61,9 +62,10 @@ namespace WindowsFormsApp1
             SqlCommand cmd = new SqlCommand();
             try
             {
-                Form2.LogMessageToFile("Save Parson OIB: " + person.Oib);
+                Form2.LogMessageToFile("Save Parson Line {} OIB: " + person.Oib);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "InsertPerson";
+                Form2.LogMessageToFile("Execute precedure {InsertPerson} line {66} OIB: " + person.Oib);
                 cmd.Parameters.AddWithValue("@name", person.Name);
                 cmd.Parameters.AddWithValue("@surname", person.Surname);
                 cmd.Parameters.AddWithValue("@oib", person.Oib);
@@ -80,6 +82,8 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Form2.LogMessageToFile("Save Parson OIB: " + person.Oib + " not success");
+                 Logger log = NLog.LogManager.GetCurrentClassLogger();
+                 log.Error("Login procedure InsertPerson", ex);
             }
             finally
             {
@@ -95,6 +99,7 @@ namespace WindowsFormsApp1
 
             }
             MessageBox.Show(this.textBoxName.Text, "Saved your Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+          
         }
 
         

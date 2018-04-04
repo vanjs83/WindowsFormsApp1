@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using NLog;
+
 namespace WindowsFormsApp1
 {
     public partial class Form2 : Form
@@ -61,6 +63,7 @@ namespace WindowsFormsApp1
             if (string.IsNullOrEmpty( this.textBox1.Text) || string.IsNullOrEmpty(this.textBox2.Text) || comboRule.SelectedIndex == -1)
             {
                 MessageBox.Show("Please, Insert username and password or role","Faild",MessageBoxButtons.OKCancel,MessageBoxIcon.Warning);
+                Form2.LogMessageToFile("Validation not success username or password Failed");
                 return;
             }
 
@@ -89,11 +92,12 @@ namespace WindowsFormsApp1
             {
                 // Provjeravam korisnika
                 cmd.CommandText = "ShowLogin";
-                
+                Form2.LogMessageToFile("Execute procedure ShowLogin line {92}");
             }
             else
             {         //ubacujem novog korisnika
-                cmd.CommandText = "InsertLogin";   
+                cmd.CommandText = "InsertLogin";
+                Form2.LogMessageToFile("Execute procedure: InsertLogin line {97}");
             }
             cmd.Parameters.AddWithValue("@username", user.Username);
               cmd.Parameters.AddWithValue("@password", Hash(user.Password));
@@ -132,7 +136,8 @@ namespace WindowsFormsApp1
                 {
                     MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                     LogMessageToFile("Login User " + user.Username + " not success, Error: " + ex.Message);//Logging
-                    
+                    Logger log = NLog.LogManager.GetCurrentClassLogger();
+                    log.Error("Login User", ex);
                 }
                 finally
                 {
@@ -143,7 +148,9 @@ namespace WindowsFormsApp1
             }
             // otvori formu za unos osobnih podataka
             else if (checkBox1.Checked) {
-                cmd.ExecuteNonQuery();
+                int numQuery = cmd.ExecuteNonQuery();
+                 if(numQuery != -1)
+                    Form2.LogMessageToFile("Execute procedure InserrtLogin Status OK");
                 con.Close();
                 PersonForm personForm = new PersonForm();
                 this.Hide();

@@ -74,8 +74,12 @@ namespace WindowsFormsApp1
             this.name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button3 = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
+            this.button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -371,11 +375,12 @@ namespace WindowsFormsApp1
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.name,
             this.value});
-            this.listView1.Location = new System.Drawing.Point(1063, 58);
+            this.listView1.Location = new System.Drawing.Point(1063, 89);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(229, 405);
+            this.listView1.Size = new System.Drawing.Size(229, 374);
             this.listView1.TabIndex = 33;
             this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // name
             // 
@@ -397,12 +402,41 @@ namespace WindowsFormsApp1
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // comboBoxCurrency
+            // 
+            this.comboBoxCurrency.FormattingEnabled = true;
+            this.comboBoxCurrency.Items.AddRange(new object[] {
+            "EUR",
+            "USD",
+            "GBP",
+            "CHF"});
+            this.comboBoxCurrency.Location = new System.Drawing.Point(1063, 58);
+            this.comboBoxCurrency.Name = "comboBoxCurrency";
+            this.comboBoxCurrency.Size = new System.Drawing.Size(229, 21);
+            this.comboBoxCurrency.TabIndex = 34;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(1213, 476);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(79, 23);
+            this.button5.TabIndex = 35;
+            this.button5.Text = "Currency";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.getCurrency);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1304, 511);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.comboBoxCurrency);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -440,9 +474,10 @@ namespace WindowsFormsApp1
             this.MaximumSize = new System.Drawing.Size(1320, 550);
             this.MinimumSize = new System.Drawing.Size(1320, 550);
             this.Name = "Form1";
-            this.Text = "Report";
+            this.Text = "SaveMoney";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -488,6 +523,9 @@ namespace WindowsFormsApp1
         private ListView listView1;
         private ColumnHeader name;
         private ColumnHeader value;
+        private ErrorProvider errorProvider1;
+        private ComboBox comboBoxCurrency;
+        private Button button5;
     }
 }
 
