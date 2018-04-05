@@ -22,11 +22,10 @@ namespace WindowsFormsApp1
 
         public string GetConnString()
         {       //connection string on database VSITESTUDNET
-          return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
-           // return "workstation id=payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=payments.mssql.somee.com;persist security info=False;initial catalog=payments";
+            return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
+            // return workstation id=Payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=Payments.mssql.somee.com;persist security info=False;initial catalog=Payments
         }
-
-        public static void LogMessageToFile(string msg)
+            public static void LogMessageToFile(string msg)
         {
 
             System.IO.StreamWriter sw = System.IO.File.AppendText(@"MyLogFile.txt");
