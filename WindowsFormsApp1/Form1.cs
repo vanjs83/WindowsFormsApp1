@@ -82,8 +82,8 @@ namespace WindowsFormsApp1
 
         private string GetConnString()
         {    //connection string on database VSITESTUDNET
-            return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
-            // workstation id=Payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=Payments.mssql.somee.com;persist security info=False;initial catalog=Payments
+             // return "Data Source=VSITESTUDENT;Initial Catalog=Payment;Integrated Security=True";
+            return "workstation id=Payments.mssql.somee.com;packet size=4096;user id=tvanjurek_SQLLogin_1;pwd=6ejthpgljo;data source=Payments.mssql.somee.com;persist security info=False;initial catalog=Payments";
         }
 
 
