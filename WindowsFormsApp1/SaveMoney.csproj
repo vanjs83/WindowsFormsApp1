@@ -128,7 +128,6 @@
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Item.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="PersonForm.cs">
       <SubType>Form</SubType>

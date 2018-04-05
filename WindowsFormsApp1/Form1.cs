@@ -25,7 +25,6 @@ namespace WindowsFormsApp1
             this._person  = new Person (user);
             RunTimer();
             GetPerson();
-        
         }
 
         private void get_response(string val)
@@ -94,16 +93,17 @@ namespace WindowsFormsApp1
            
                 SqlCommand command = new SqlCommand();
                 command.Connection = conn;
+                conn.Open();
+            try
+            {
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "GetPerson";
-                Form2.LogMessageToFile("Execute procedure {GetPerson}");
                 command.Parameters.AddWithValue("@idUser", this._person.Id);
-                conn.Open();
-            try { 
-                using (SqlDataReader oReader = command.ExecuteReader())
-                {
+                Form2.LogMessageToFile("Execute procedure {GetPerson}");
+                   using (SqlDataReader oReader = command.ExecuteReader())
+                   {
                     while (oReader.Read())
-                    {
+                      {
                         _person.Name = oReader["Name"].ToString();
                         _person.Surname = oReader["Surname"].ToString();
                         _person.Oib = oReader["Oib"].ToString();
@@ -111,7 +111,6 @@ namespace WindowsFormsApp1
                         _person.Email = oReader["Email"].ToString();
                         _person.Mob = oReader["Email"].ToString();
                     }
-
                 }
             }
             catch (Exception ex)
@@ -146,8 +145,6 @@ namespace WindowsFormsApp1
         }
         private void ShowCategory(SqlConnection conn, SqlDataAdapter adapter)
         {
-         
-
             SqlCommand command = new SqlCommand();
             command.CommandType = CommandType.StoredProcedure;
             command.CommandText = "ShowNameCategory";
@@ -567,8 +564,7 @@ namespace WindowsFormsApp1
                 Form2.LogMessageToFile("Print pdf Status Success line{512}");
                 printDocument1.Print();
             }
-         
-
+        
         }
 
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
@@ -578,28 +574,19 @@ namespace WindowsFormsApp1
             dataGridView1.DrawToBitmap(btm, new System.Drawing.Rectangle(0, 0, this.dataGridView1.Width, this.dataGridView1.Height));
             e.Graphics.DrawImage(btm, 10, 10);
 
-            //Document doc = new Document(iTextSharp.text.PageSize.A4, 10, 10, 10, 10);
-            //PdfWriter wri = PdfWriter.GetInstance(doc, new FileStream("Payments.pdf", FileMode.Create));
-            //doc.Open();
-            //PdfPTable table = new PdfPTable(dataGridView1.ColumnCount);
-            ////add headers
-            //for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                  //{
-            //    table.AddCell(new Phrase(dataGridView1.colu))
-            //}
-
-
         }
 
 
 
         private void ConvertHrk(double tecaj) {
-            //     String.Format("{0:0.00}", sumPrice)
+            //     String.Format("{0:00.00}", sumPrice)
             try
             {
-              //  if (string.IsNullOrEmpty(textBoxSuma.Text))
-                //    throw new NullReferenceException(textBoxSuma.Text + "is null");
-                textBoxSuma.Text = String.Format("{0:0.00}", Convert.ToDouble(textBoxSuma.Text) * tecaj);
+                  if (textBoxSuma.Text.Contains('.') )
+                    throw new FormatException();
+                double val = Convert.ToDouble(textBoxSuma.Text);
+                string res = String.Format("{0:0.00}", val * tecaj);
+                textBoxSuma.Text = res;
             }
             catch (ArgumentNullException ex)
             {
@@ -617,7 +604,7 @@ namespace WindowsFormsApp1
             }
             catch (FormatException ex)
             {
-                MessageBox.Show("Please insert Value for Suma", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Please insert Value for Suma" + " Don't use " + " .", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Form2.LogMessageToFile(ex.Message);
                 Logger log = NLog.LogManager.GetCurrentClassLogger();
                 log.Error(ex.ToString(), ex);
@@ -646,7 +633,7 @@ namespace WindowsFormsApp1
           //  listView1.SelectedItems[0].BackColor= Color.Yellow;
             ListViewItem item = listView1.SelectedItems[0];
             if (item.Text == "srednji_tecaj" || item.Text == "kupovni_tecaj" || item.Text == "prodajni_tecaj")
-            {
+            {    //Dohvati tecaj
                val = Convert.ToDouble(item.SubItems[1].Text);
             }
             if(val > 0)
