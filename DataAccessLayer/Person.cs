@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
-namespace WindowsFormsApp1
+
+namespace DataAccessLayer
 {
     public class Person : User
     {
+
+
         public string Name { get; set; }
 
         public string Surname { get; set; }
@@ -25,6 +27,7 @@ namespace WindowsFormsApp1
         public Person(string name, string surname, string oib, string address, string email, string mob, User user)
           : base(user) //Poziv baznog konstruktra
         {
+
             this.Name = name;
             this.Surname = surname;
             this.Oib = oib;
@@ -50,6 +53,8 @@ namespace WindowsFormsApp1
         : base(user) //Poziv baznog konstruktra:base(user) //Poziv baznog konstruktra:base(user) //Poziv baznog konstruktra:base(user) //Poziv baznog konstruktra:base(user) //Poziv baznog konstruktra
         { }
 
-
+        public Person()
+        {
+        }
     }
 }
