@@ -79,14 +79,10 @@ namespace WindowsFormsApp1
         }
 
       
-
-
-    
-
         //SELECT QUERY
         private void button1_Click(object sender, EventArgs e)
         {
-            string ProcedureName=""; 
+            string ProcedureName = ""; 
           
             
             if (this.checkBox1.Checked)
@@ -101,12 +97,11 @@ namespace WindowsFormsApp1
                 button4.Enabled = true;
                 ProcedureName = "ShowPayments";
                 BusinessLogicLayer.BusinessLayer.LogMessageToFile("Execute procedure {ShowPayments} line{157}");
-
                 button4.Enabled = true;
             }
         
                 
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile("try execute procedure line{172}");
+               BusinessLayer.LogMessageToFile("try execute procedure line{172}");
 
                         //VRATI INFO FOR GRID VIEW                                                                                      item name                     count name                      payname
                    dataGridView1.DataSource = DataLayer.SelectQuery(ProcedureName, this.dateTimeFrom.Value, this.dateTimeTo.Value, this.comboBoxItem.Text.Trim(), this.comboBoxCount.Text.Trim(), this.comboBoxCategory.Text.Trim(), this.comboBoxPay.Text.Trim(),  this._person.Id);
@@ -168,10 +163,6 @@ namespace WindowsFormsApp1
 
             }
           
-
-
-
-
 
         //INSERT DATABASE
         private void button2_Click(object sender, EventArgs e)
@@ -385,16 +376,15 @@ namespace WindowsFormsApp1
 
         }
 
-
-
-        
+        //click On Button Currency 
         private void getCurrency(object sender, EventArgs e)
         {
             listView1.Items.Clear();
-            string val = comboBoxCurrency.Text;
-            get_response(val);
+            string valuta = comboBoxCurrency.Text;
+            get_response(valuta);
         }
 
+        //click listview
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 0)
@@ -412,7 +402,6 @@ namespace WindowsFormsApp1
                 }
             }
                
-
         }
     }
 }

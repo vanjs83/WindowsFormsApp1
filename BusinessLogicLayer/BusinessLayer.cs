@@ -41,20 +41,18 @@ namespace BusinessLogicLayer
                 if (sumaValue.Contains('.'))
                     throw new FormatException();
                 double Tecaj = Convert.ToDouble(tecaj);
-                double value = Convert.ToDouble(sumaValue);
-                ResultKuna = String.Format("{0:0.00}", value * Tecaj);
+                double Value = Convert.ToDouble(sumaValue);
+                ResultKuna = String.Format("{0:0.00}", Value * Tecaj);
             }
             catch (ArgumentNullException ex)
             {
                 MessageBox.Show(ex.ToString(), "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
-              
+                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message); 
             }
             catch (InvalidCastException ex)
             {
                 MessageBox.Show(ex.ToString(), "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
-               
             }
             catch (FormatException ex)
             {
@@ -68,12 +66,5 @@ namespace BusinessLogicLayer
             }
             return ResultKuna;
         }
-
-
-
-
-
-
-
     }
 }
