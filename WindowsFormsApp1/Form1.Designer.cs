@@ -176,9 +176,9 @@ namespace WindowsFormsApp1
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(85, 430);
+            this.button4.Location = new System.Drawing.Point(84, 430);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(199, 23);
+            this.button4.Size = new System.Drawing.Size(200, 23);
             this.button4.TabIndex = 11;
             this.button4.Text = "Remove";
             this.button4.UseVisualStyleBackColor = true;
@@ -219,9 +219,9 @@ namespace WindowsFormsApp1
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(87, 403);
+            this.comboBox1.Location = new System.Drawing.Point(84, 403);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(197, 21);
+            this.comboBox1.Size = new System.Drawing.Size(200, 21);
             this.comboBox1.TabIndex = 17;
             // 
             // comboBoxItem

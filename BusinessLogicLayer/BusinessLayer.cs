@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 
 namespace BusinessLogicLayer
 {
@@ -31,6 +31,44 @@ namespace BusinessLogicLayer
             var hashBytes = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
             return Convert.ToBase64String(hashBytes);
         }
+
+        public static string ConvertHrk(string tecaj, string sumaValue)
+        {
+            
+            string ResultKuna = "";
+            try
+            {
+                if (sumaValue.Contains('.'))
+                    throw new FormatException();
+                double Tecaj = Convert.ToDouble(tecaj);
+                double value = Convert.ToDouble(sumaValue);
+                ResultKuna = String.Format("{0:0.00}", value * Tecaj);
+            }
+            catch (ArgumentNullException ex)
+            {
+                MessageBox.Show(ex.ToString(), "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
+              
+            }
+            catch (InvalidCastException ex)
+            {
+                MessageBox.Show(ex.ToString(), "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
+               
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Please insert Value for Suma" + " Don't use " + " .", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Please insert Value for Suma" + " Don't use " + " null reference ", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
+            }
+            return ResultKuna;
+        }
+
 
 
 

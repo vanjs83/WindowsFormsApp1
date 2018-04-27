@@ -387,47 +387,7 @@ namespace WindowsFormsApp1
 
 
 
-        private void ConvertHrk(double tecaj)
-        {
-            //     String.Format("{0:00.00}", sumPrice)
-            try
-            {
-                  if (textBoxSuma.Text.Contains('.') )
-                    throw new FormatException();
-                double val = Convert.ToDouble(textBoxSuma.Text);
-                string res = String.Format("{0:0.00}", val * tecaj);
-                textBoxSuma.Text = res;
-            }
-            catch (ArgumentNullException ex)
-            {
-                MessageBox.Show(ex.ToString(), "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
-                Logger log = NLog.LogManager.GetCurrentClassLogger();
-                log.Error(ex.ToString(), ex);
-            }
-            catch (InvalidCastException ex)
-            {
-                MessageBox.Show(ex.ToString(), "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
-                Logger log = NLog.LogManager.GetCurrentClassLogger();
-                log.Error(ex.ToString(), ex);
-            }
-            catch (FormatException ex)
-            {
-                MessageBox.Show("Please insert Value for Suma" + " Don't use " + " .", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
-                Logger log = NLog.LogManager.GetCurrentClassLogger();
-                log.Error(ex.ToString(), ex);
-            }
-            catch (NullReferenceException ex)
-            {
-                MessageBox.Show(ex.ToString(), "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
-                Logger log = NLog.LogManager.GetCurrentClassLogger();
-                log.Error(ex.ToString(), ex);
-            }
-        }
-
+        
         private void getCurrency(object sender, EventArgs e)
         {
             listView1.Items.Clear();
@@ -439,15 +399,19 @@ namespace WindowsFormsApp1
         {
             if (listView1.SelectedItems.Count == 0)
                 return;
-            double val = 0;
+            
           //  listView1.SelectedItems[0].BackColor= Color.Yellow;
             ListViewItem item = listView1.SelectedItems[0];
             if (item.Text == "srednji_tecaj" || item.Text == "kupovni_tecaj" || item.Text == "prodajni_tecaj")
             {    //Dohvati tecaj
-               val = Convert.ToDouble(item.SubItems[1].Text);
+               string tecaj = item.SubItems[1].Text;
+                if (tecaj != null)
+                {
+                    string value = textBoxSuma.Text.Trim();
+                    this.textBoxSuma.Text = BusinessLayer.ConvertHrk(tecaj, value);
+                }
             }
-            if(val > 0)
-               ConvertHrk(val);
+               
 
         }
     }
