@@ -25,12 +25,14 @@ namespace BusinessLogicLayer
             }
         }
 
+
         public static string Hash(string password) //HASH Password
         {
             var bytes = new UTF8Encoding().GetBytes(password);
             var hashBytes = System.Security.Cryptography.MD5.Create().ComputeHash(bytes);
             return Convert.ToBase64String(hashBytes);
         }
+
 
         public static string ConvertHrk(string tecaj, string sumaValue)
         {
@@ -47,22 +49,18 @@ namespace BusinessLogicLayer
             catch (ArgumentNullException ex)
             {
                 MessageBox.Show(ex.ToString(), "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message); 
+                LogMessageToFile(ex.Message); 
             }
             catch (InvalidCastException ex)
             {
                 MessageBox.Show(ex.ToString(), "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
+                LogMessageToFile(ex.Message);
             }
-            catch (FormatException ex)
-            {
-                MessageBox.Show("Please insert Value for Suma" + " Don't use " + " .", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
-            }
+            
             catch (NullReferenceException ex)
             {
                 MessageBox.Show("Please insert Value for Suma" + " Don't use " + " null reference ", "Faild", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                BusinessLogicLayer.BusinessLayer.LogMessageToFile(ex.Message);
+                LogMessageToFile(ex.Message);
             }
             return ResultKuna;
         }
